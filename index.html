@@ -423,8 +423,49 @@ body.modal-open {
   opacity: 1;
 }
 .modal-close {
-  display: none;
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.25);
+
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 }
+
+.modal-close::before,
+.modal-close::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+.modal-close::before {
+  transform: rotate(45deg);
+}
+
+.modal-close::after {
+  transform: rotate(-45deg);
+}
+
+.modal-close:hover {
+  background: rgba(255,181,232,0.15);
+  box-shadow: 0 0 20px rgba(255,181,232,0.35);
+  transform: rotate(90deg) scale(1.05);
+}
+
 
 
 .modal-icon{font-size:4rem;margin-bottom:1rem}
@@ -489,6 +530,48 @@ body.modal-open {
   box-shadow: 0 0 20px rgba(255,181,232,.3);
 }
 
+.hobby-card .hobby-icon {
+  font-family: 'Syne', sans-serif;
+}
+
+.mode-quote {
+  max-width: 900px;
+  margin: 2rem auto 5rem;
+  padding: 2rem 2.5rem;
+
+  background: rgba(255,255,255,0.04);
+  border-left: 4px solid var(--lav);
+  border-radius: 12px;
+
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.9);
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .5s ease, transform .5s ease;
+
+  display: none;
+}
+
+.mode-quote.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mode-quote blockquote {
+  margin-bottom: 1rem;
+}
+
+.mode-quote span {
+  font-family: 'Space Mono', monospace;
+  font-size: .9rem;
+  color: var(--mint);
+  opacity: .8;
+}
+
 </style>
 </head>
 
@@ -536,10 +619,35 @@ Welcome to <span class="highlight">Wonka's Factory, realized</span>—AI is the 
   </div>
 </section>
 
+<section class="mode-quote" id="modeQuote" aria-hidden="true">
+  <blockquote id="modeQuoteText"></blockquote>
+  <span id="modeQuoteAuthor"></span>
+</section>
+
+
 <!-- Workshop -->
 <section class="hobbies-section">
 <h2 class="section-title">The Workshop</h2>
 <div class="hobbies-grid">
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="theoretical,meta">
+  <span class="hobby-icon">∞</span>
+  <div class="hobby-name">Infinity</div>
+  <div class="hobby-desc">Why beginnings and endings are human inventions</div>
+  <div class="hobby-expanded">
+    <p>
+      Humans are deeply conditioned to think in terms of starts and stops—birth and death, zero and one, on and off. Even our mathematics prefers clean boundaries and discrete states. But the universe itself shows no such preference.
+      <br><br>
+      There is no requirement for reality to have a beginning, an end, or even a fundamental unit. Continuity, recursion, and self-consistency work just as well—often better. Infinity isn’t a paradox of nature; it’s a discomfort of the human mind.
+      <br><br>
+      What we call a “three-dimensional object” moving through time is, from a higher-dimensional perspective, a single crystalline structure—a worldline or world-volume that already exists as a whole. Motion is simply how a lower-dimensional observer experiences traversal through that structure.
+      <br><br>
+      Time does not flow. We do.
+    </p>
+  </div>
+  <div class="expand-indicator">↓ Click to expand</div>
+</div>
+
 
 <div class="hobby-card" onclick="openModal(this)" data-tags="abstract,meta">
 <span class="hobby-icon">🤖</span>
@@ -897,19 +1005,73 @@ const INTUITION_GROUPS = [
 
 document.querySelectorAll('.fork button').forEach(btn => {
   btn.addEventListener('click', () => {
-    startMusic();                // 🎵 magic begins
+    startMusic();                     // already there
+    showQuote(btn.dataset.mode);      // 👈 new
     applyMode(btn.dataset.mode);
   });
 });
 
 
+const QUOTES = {
+  structure: {
+    text: `“You can know the name of a bird in all the languages of the world,
+but when you're finished, you'll know absolutely nothing whatever about the bird.
+So let’s look at the bird and see what it’s doing — that’s what counts.”`,
+    author: "— Richard Feynman"
+  },
+  intuition: {
+    text: `“I have little patience with scientists who take a board of wood, look for its thinnest part, and drill a great number of holes where drilling is easy.”`,
+    author: "— Albert Einstein"
+  },
+  chaos: {
+    text: `"Never break faith with the truth."`,
+    author: "— George Tenet"
+  }
+};
+
+const quoteBox = document.getElementById('modeQuote');
+const quoteText = document.getElementById('modeQuoteText');
+const quoteAuthor = document.getElementById('modeQuoteAuthor');
+
+function showQuote(mode) {
+  const q = QUOTES[mode];
+  if (!q) return;
+
+  quoteText.textContent = q.text;
+  quoteAuthor.textContent = q.author;
+
+  quoteBox.classList.remove('active');
+  void quoteBox.offsetWidth; // reset animation
+  quoteBox.classList.add('active');
+}
+
+const MODE_LEADS = {
+  structure: 'Fluid Dynamics',
+  intuition: 'Infinity',
+  chaos: 'Loki'
+};
+
+function cardTitle(card) {
+  return card.querySelector('.hobby-name')?.textContent || '';
+}
+
+
 function applyMode(mode) {
   let reordered = [];
+  const leadTitle = MODE_LEADS[mode];
+
+  // pull out the lead card first (if defined)
+  let leadCard = null;
+  if (leadTitle) {
+    leadCard = cards.find(c => cardTitle(c) === leadTitle);
+  }
 
   if (mode === 'structure') {
-    reordered = cards.slice().sort((a,b) =>
-      rank(a,STRUCTURE_ORDER) - rank(b,STRUCTURE_ORDER)
-    );
+    reordered = cards
+      .filter(c => c !== leadCard)
+      .sort((a, b) =>
+        rank(a, STRUCTURE_ORDER) - rank(b, STRUCTURE_ORDER)
+      );
     grid.style.transform = '';
   }
 
@@ -917,20 +1079,27 @@ function applyMode(mode) {
     reordered = [];
     INTUITION_GROUPS.forEach(group => {
       reordered.push(
-        ...cards.filter(c => group.some(t => hasTag(c,t)))
+        ...cards.filter(
+          c => c !== leadCard && group.some(t => hasTag(c, t))
+        )
       );
     });
     grid.style.transform = '';
   }
 
   if (mode === 'chaos') {
-    reordered = cards.slice()
+    reordered = cards
+      .filter(c => c !== leadCard)
       .sort(() => Math.random() - 0.5);
     grid.style.transform = 'rotate(-1deg)';
   }
 
+  // prepend the lead card if it exists
+  if (leadCard) reordered.unshift(leadCard);
+
   reordered.forEach(card => grid.appendChild(card));
 }
+
 
 /* helpers */
 function hasTag(card, tag) {
