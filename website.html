@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nick | AI Maximalist</title>
+<link rel="icon" href="rabbit.webp" type="image/webp">
+<link rel="shortcut icon" href="rabbit.webp">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+--pink:#FFB5E8;
+--purple:#DCD3FF;
+--blue:#A5D8FF;
+--mint:#B5FFCE;
+--yellow:#FFF5BA;
+--peach:#FFCAB0;
+--lav:#E0BBE4;
+--bg:#0a0a0f;
+}
+
+body{
+font-family:'Space Mono',monospace;
+background:var(--bg);
+color:#fff;
+overflow-x:hidden;
+}
+
+/* Banner */
+.made-with-claude{
+position:fixed;
+top:0;left:0;width:100%;
+padding:.8rem;
+text-align:center;
+font-weight:700;
+background:linear-gradient(90deg,var(--pink),var(--purple),var(--blue),var(--mint));
+color:#000;
+z-index:1000;
+letter-spacing:1px;
+}
+
+/* Grid background */
+.static-grid{
+position:fixed;
+inset:-10%;
+background:
+linear-gradient(rgba(220,211,255,.3) 1px,transparent 1px),
+linear-gradient(90deg,rgba(220,211,255,.3) 1px,transparent 1px);
+background-size:80px 80px;
+pointer-events:none;
+z-index:0;
+}
+
+/* Floating shapes */
+.floating-shapes{
+position:fixed;
+inset:0;
+pointer-events:none;
+z-index:1;
+overflow:hidden;
+}
+
+.floating-shape{
+position:absolute;
+font-size:2rem;
+opacity:.2;
+animation:shape-float linear infinite;
+}
+
+@keyframes shape-float{
+0%{transform:translateY(100vh) rotate(0deg)}
+100%{transform:translateY(-100px) rotate(360deg)}
+}
+
+/* Matrix rain */
+.matrix-container{
+position:fixed;
+inset:0;
+pointer-events:none;
+z-index:1;
+overflow:hidden;
+}
+
+.matrix-column{
+position:absolute;
+top:-30%;
+font-size:16px;
+line-height:1.4;
+text-shadow:0 0 8px currentColor;
+opacity:.6;
+animation:matrix-fall linear infinite;
+}
+
+@keyframes matrix-fall{
+from{transform:translateY(0)}
+to{transform:translateY(150vh)}
+}
+
+/* Hero */
+.hero{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:6rem 2rem 2rem;
+position:relative;
+z-index:5;
+}
+
+.hero-content{
+display:grid;
+grid-template-columns:1fr 1.5fr;
+gap:4rem;
+max-width:1200px;
+}
+
+.profile-frame{
+width:320px;height:400px;
+padding:8px;
+border-radius:20px;
+background:linear-gradient(135deg,var(--pink),var(--purple),var(--blue));
+box-shadow:0 0 40px rgba(255,181,232,.3),0 0 80px rgba(165,216,255,.2);
+animation:profile-float 7s ease-in-out infinite;
+}
+
+.profile-inner{
+width:100%;height:100%;
+border-radius:14px;
+overflow:hidden;
+background:#1a1a2e;
+}
+
+.profile-inner img{
+width:100%;height:100%;object-fit:cover;
+}
+
+@keyframes profile-float{
+0%,100%{transform:translateY(0) rotate(-2deg)}
+25%{transform:translateY(-25px) rotate(1deg)}
+50%{transform:translateY(-10px) rotate(-1deg)}
+75%{transform:translateY(-30px) rotate(2deg)}
+}
+
+.hero-text{
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
+
+.tagline{
+font-size:.9rem;
+color:var(--mint);
+text-transform:uppercase;
+letter-spacing:4px;
+margin-bottom:1rem;
+text-shadow:0 0 20px var(--mint);
+}
+
+.name{
+font-family:'Syne',sans-serif;
+font-size:5rem;
+font-weight:800;
+background:linear-gradient(135deg,var(--pink),var(--purple),var(--blue),var(--mint));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+background-clip:text;
+line-height:1.1;
+margin-bottom:1.5rem;
+filter:drop-shadow(0 0 30px rgba(255,181,232,.5));
+}
+
+.subtitle{
+font-size:1.5rem;
+color:var(--yellow);
+margin-bottom:2rem;
+text-shadow:0 0 15px var(--yellow);
+}
+
+.manifesto{
+font-size:1.1rem;
+line-height:1.8;
+color:rgba(255,255,255,.8);
+max-width:500px;
+padding-left:1.5rem;
+border-left:3px solid var(--peach);
+}
+
+.manifesto .highlight{
+color:var(--peach);
+font-weight:700;
+}
+
+/* Workshop section */
+.hobbies-section{
+padding:6rem 2rem;
+position:relative;
+z-index:5;
+}
+
+.section-title{
+font-family:'Syne',sans-serif;
+font-size:3rem;
+text-align:center;
+margin-bottom:4rem;
+background:linear-gradient(90deg,var(--lav),var(--pink));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+background-clip:text;
+}
+
+.hobbies-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:2rem;
+max-width:1400px;
+margin:auto;
+}
+
+/* Card base */
+.hobby-card{
+background:rgba(20,20,35,.85);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,.15);
+border-radius:20px;
+padding:2rem;
+text-align:center;
+cursor:pointer;
+transform-style:preserve-3d;
+transition:transform .2s ease,box-shadow .2s ease;
+position:relative;
+}
+
+.hobby-card::after{
+content:'';
+position:absolute;inset:0;
+border-radius:20px;
+background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.15),transparent 60%);
+opacity:0;
+transition:.2s;
+pointer-events:none;
+}
+
+.hobby-card:hover::after{opacity:1}
+
+.hobby-card:hover{
+box-shadow:0 0 30px var(--glow,rgba(255,181,232,.3));
+}
+
+.hobby-icon{font-size:3rem;margin-bottom:1rem;display:block}
+
+.hobby-name{
+font-family:'Syne',sans-serif;
+font-size:1.2rem;
+font-weight:700;
+margin-bottom:.5rem;
+color:var(--card-color,var(--pink));
+text-shadow:0 0 10px var(--glow,rgba(255,181,232,.3));
+}
+
+.hobby-desc{
+font-size:.85rem;
+color:rgba(255,255,255,.6);
+line-height:1.5;
+}
+
+.hobby-expanded{display:none}
+
+.expand-indicator{
+font-size:.75rem;
+color:rgba(255,255,255,.4);
+margin-top:1rem;
+transform:rotate(180deg);
+display:inline-block;
+}
+
+.hobby-card:hover .expand-indicator{
+color:var(--card-color,var(--pink));
+animation:wiggle .5s ease-in-out infinite;
+}
+
+@keyframes wiggle{
+0%,100%{transform:rotate(180deg) translateX(0)}
+25%{transform:rotate(180deg) translateX(-3px)}
+75%{transform:rotate(180deg) translateX(3px)}
+}
+
+/* Card colors */
+.hobby-card:nth-child(1){--card-color:var(--mint);--glow:rgba(181,255,206,.4)}
+.hobby-card:nth-child(2){--card-color:var(--pink);--glow:rgba(255,181,232,.3)}
+.hobby-card:nth-child(3){--card-color:var(--lav);--glow:rgba(224,187,228,.3)}
+.hobby-card:nth-child(4){--card-color:var(--purple);--glow:rgba(220,211,255,.3)}
+.hobby-card:nth-child(5){--card-color:var(--blue);--glow:rgba(165,216,255,.3)}
+.hobby-card:nth-child(6){--card-color:var(--yellow);--glow:rgba(255,245,186,.3)}
+.hobby-card:nth-child(7){--card-color:var(--peach);--glow:rgba(255,202,176,.3)}
+.hobby-card:nth-child(8){--card-color:var(--lav);--glow:rgba(224,187,228,.3)}
+.hobby-card:nth-child(9){--card-color:var(--pink);--glow:rgba(255,181,232,.3)}
+.hobby-card:nth-child(10){--card-color:var(--purple);--glow:rgba(220,211,255,.3)}
+.hobby-card:nth-child(11){--card-color:var(--blue);--glow:rgba(165,216,255,.3)}
+.hobby-card:nth-child(12){--card-color:var(--mint);--glow:rgba(181,255,206,.3)}
+.hobby-card:nth-child(13){--card-color:var(--yellow);--glow:rgba(255,245,186,.3)}
+.hobby-card:nth-child(14){--card-color:var(--peach);--glow:rgba(255,202,176,.3)}
+.hobby-card:nth-child(15){--card-color:var(--lav);--glow:rgba(224,187,228,.3)}
+.hobby-card:nth-child(16){--card-color:var(--pink);--glow:rgba(255,181,232,.3)}
+.hobby-card:nth-child(17){--card-color:var(--purple);--glow:rgba(220,211,255,.3)}
+.hobby-card:nth-child(18){--card-color:var(--peach);--glow:rgba(255,202,176,.4)}
+
+/* Loki card */
+.loki-photo{
+width:80px;height:80px;
+border-radius:50%;
+background:linear-gradient(135deg,var(--peach),var(--pink));
+margin:0 auto 1rem;
+overflow:hidden;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:2.5rem;
+}
+
+.loki-photo img{
+width:100%;height:100%;object-fit:cover;
+}
+
+/* Quote section */
+.factory-section{
+padding:8rem 2rem;
+text-align:center;
+position:relative;
+z-index:5;
+}
+
+.factory-quote{
+font-family:'Syne',sans-serif;
+font-size:2.5rem;
+font-weight:700;
+max-width:900px;
+margin:0 auto;
+line-height:1.4;
+background:linear-gradient(135deg,var(--yellow),var(--peach),var(--pink));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+background-clip:text;
+}
+
+.factory-subtext{
+margin-top:2rem;
+font-size:1.2rem;
+color:var(--lav);
+}
+
+/* Modal - fixed properly */
+/* ========== MODAL (BULLETPROOF) ========== */
+
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 100000;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(.95);
+  
+  background: rgba(20,20,35,.98);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 3rem;
+
+  width: min(600px, 90vw);
+  max-height: 80vh;
+  overflow-y: auto;
+
+  opacity: 0;
+  transition:
+    transform .3s cubic-bezier(.2,.8,.2,1),
+    opacity .3s ease;
+
+  box-shadow: 0 0 60px rgba(255,181,232,.25);
+}
+
+.modal-overlay.active .modal-content {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+.modal-close {
+  display: none;
+}
+
+
+.modal-icon{font-size:4rem;margin-bottom:1rem}
+.modal-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;margin-bottom:.5rem}
+.modal-subtitle{font-size:1rem;color:rgba(255,255,255,.6);margin-bottom:1.5rem}
+.modal-text{font-size:1.05rem;line-height:1.8;color:rgba(255,255,255,.85)}
+
+/* Responsive */
+@media(max-width:1200px){
+.hobbies-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+@media(max-width:900px){
+.hero-content{grid-template-columns:1fr;text-align:center}
+.profile-frame{margin:0 auto}
+.manifesto{margin:0 auto;text-align:left}
+.name{font-size:3rem}
+.hobbies-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:600px){
+.hobbies-grid{grid-template-columns:1fr}
+.factory-quote{font-size:1.8rem}
+}
+
+.fork {
+  text-align: center;
+  padding: 4rem 2rem;
+  z-index: 6;
+  position: relative;
+}
+
+.fork h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(90deg,var(--lav),var(--mint));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.fork-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.fork button {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.25);
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: 'Space Mono';
+  transition: transform .2s, box-shadow .2s;
+}
+
+.fork button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(255,181,232,.3);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Banner -->
+<div class="made-with-claude">
+✨ This website was proudly made with Claude and ChatGPT in 1.5 Hours and a dash of magic ✨
+</div>
+
+<!-- Grid background -->
+<div class="static-grid" id="grid"></div>
+
+<!-- Floating shapes -->
+<div class="floating-shapes" id="floatingShapes"></div>
+
+<!-- Matrix rain -->
+<div class="matrix-container" id="matrix"></div>
+
+<!-- Hero -->
+<section class="hero">
+<div class="hero-content">
+<div class="profile-frame">
+<div class="profile-inner">
+<img src="me.jpeg" alt="Nick">
+</div>
+</div>
+
+<div class="hero-text">
+<div class="tagline">// AI Maximalist</div>
+<h1 class="name">Nick</h1>
+<div class="subtitle">Curious About Everything</div>
+<p class="manifesto">
+Welcome to <span class="highlight">Wonka's Factory, realized</span>—AI is the golden ticket. I use it to explore physics, build models, test wild theories, and chase rabbit holes I'd never find alone. It's not always right, but it's always fun. This is what curiosity looks like when you give it superpowers.
+</p>
+</div>
+</div>
+</section>
+<section class="fork">
+  <h2>How do you want to explore this mind?</h2>
+  <div class="fork-buttons">
+    <button data-mode="structure">Follow Structure</button>
+    <button data-mode="intuition">Follow Intuition</button>
+    <button data-mode="chaos">Follow Chaos</button>
+  </div>
+</section>
+
+<!-- Workshop -->
+<section class="hobbies-section">
+<h2 class="section-title">The Workshop</h2>
+<div class="hobbies-grid">
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="abstract,meta">
+<span class="hobby-icon">🤖</span>
+<div class="hobby-name">Artificial Intelligence</div>
+<div class="hobby-desc">The greatest tool humanity has ever created</div>
+<div class="hobby-expanded">
+<p>I'm interested in everything and an expert at nothing—and AI is what makes that possible. It's the great equalizer, letting a curious mind explore any field, build any model, test any theory. Is it right 100% of the time? No. But what matters more, having fun and exploring ideas rapidly, or being right all the time? I've bought more books since using AI than I ever have before—from Paul Dirac to Navier-Stokes analysis. AI doesn't replace expertise—it ignites curiosity.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="abstract,meta">
+<span class="hobby-icon">🧬</span>
+<div class="hobby-name">Biohacking</div>
+<div class="hobby-desc">Optimizing the biological machine</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by the chemistry of focus and energy. Tyrosine for dopamine precursor loading, matcha for smooth L-theanine balanced caffeine, coffee for raw stimulation. And yes—Diet Coke and Zyn work remarkably well together. The aspartame-caffeine combo hits different, and nicotine is genuinely one of the most effective cognitive enhancers we know of. It's not about being healthy, it's about being optimized.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="meta">
+<span class="hobby-icon">🧘</span>
+<div class="hobby-name">Zen Philosophy</div>
+<div class="hobby-desc">The art of no-mind</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by Zen as a counterweight to all the noise. The concept of mushin—no-mind—where thought dissolves into pure action. The koans that break logical thinking. The paradox of trying not to try. In a world of constant optimization and information overload, Zen reminds you that sometimes the answer is to stop asking the question.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="meta">
+<span class="hobby-icon">✝️</span>
+<div class="hobby-name">Christianity</div>
+<div class="hobby-desc">Grace, redemption, and the ultimate rebel</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by Christianity and why it's endured for two thousand years. The radical idea that you're loved not because of what you do, but despite what you've done. And Jesus? Absolute baller. Flipped tables in temples, hung out with outcasts and sinners, spoke truth to power, and literally conquered death. He told the religious elite they were wrong, touched the untouchables, and said the last shall be first. That's not gentle meekness—that's revolutionary courage wrapped in perfect love.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="applied,physical">
+<span class="hobby-icon">✈️</span>
+<div class="hobby-name">Aviation</div>
+<div class="hobby-desc">Thrust vectoring, morphing wings, and the poetry of flight</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by everything that flies. The physics of lift, how thrust vectoring changes maneuverability, morphing wing concepts, the way birds do things that seem aerodynamically impossible. There's something poetic about defying gravity—the engineering, the physics, the sheer audacity of flight. The sky isn't a limit, it's an invitation.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="applied,technical">
+<span class="hobby-icon">🔐</span>
+<div class="hobby-name">Cybersecurity</div>
+<div class="hobby-desc">Human factors, social engineering, and digital fortresses</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by the human side of security. Social engineering, the psychology of trust, how people become the weakest link in any system. The most sophisticated firewall means nothing if someone can talk their way past it. Security is ultimately about understanding people—how they think, how they're deceived, and how they can be protected from themselves.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="applied,technical">
+<span class="hobby-icon">🔧</span>
+<div class="hobby-name">Computer Architecture</div>
+<div class="hobby-desc">FPGAs, silicon dreams, and logic gates</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by how computers actually work at the lowest level. FPGAs, logic gates, cache hierarchies, instruction pipelines—how transistors become thought. There's something magical about the idea of programming hardware itself, of designing the very substrate that makes computation possible.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="theoretical">
+<span class="hobby-icon">⚛️</span>
+<div class="hobby-name">Physics</div>
+<div class="hobby-desc">Quantum mechanics & general relativity</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by the fundamental nature of reality. Quantum mechanics and its strange superpositions, general relativity bending spacetime, and the deep mystery of how these two pillars might someday unify. The universe is stranger than we can imagine, and thinking about it never gets old.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="applied,technical">
+<span class="hobby-icon">🌊</span>
+<div class="hobby-name">Fluid Dynamics</div>
+<div class="hobby-desc">Turbulence, vortices, and flows</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by how fluids move. Turbulence, laminar flow, vortex formation, the elegance and chaos of the Navier-Stokes equations. There's a reason it's one of the great unsolved problems in physics. Watch smoke curl or water swirl—there's hidden mathematics everywhere, beautiful and untamed.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="applied,technical">
+<span class="hobby-icon">💾</span>
+<div class="hobby-name">Microchips</div>
+<div class="hobby-desc">Embedded systems and nanoscale engineering</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by embedded systems and the nanoscale world of silicon. How we build trust into tiny chips, how cryptography gets implemented in hardware, how quantum effects start mattering at these scales. Microchips are the atoms of the digital world—everything else is built on top.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="creative">
+<span class="hobby-icon">🎨</span>
+<div class="hobby-name">Art</div>
+<div class="hobby-desc">Geometric abstraction, golden ratios, and watercolor</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by the intersection of mathematics and visual beauty. Geometric abstraction, golden ratio compositions, the precision of mathematical structures rendered in watercolor. There's something satisfying about art that follows rules—where every shape and proportion has a reason.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="creative">
+<span class="hobby-icon">🎵</span>
+<div class="hobby-name">Music</div>
+<div class="hobby-desc">From progressive metal to jazz to country</div>
+<div class="hobby-expanded">
+<p>I love everything. Progressive metal, jazz standards, Paganini's 24 Caprices, country, classical—if it's got soul, I'm in. Rhapsody in Blue and Take Five are probably my favorite pieces. There's something about music that crosses every boundary, where math becomes emotion and vibration becomes meaning. Genre loyalty is overrated.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="meta">
+<span class="hobby-icon">📚</span>
+<div class="hobby-name">Philosophy</div>
+<div class="hobby-desc">Transhumanism and the future of consciousness</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by the big questions. What is consciousness? What does it mean to be human when we can augment ourselves? What are the ethics of a post-human future? We're living through the most philosophically interesting time in history, and I can't stop thinking about where it's all heading.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="meta">
+<span class="hobby-icon">🔨</span>
+<div class="hobby-name">Woodworking & Metalworking</div>
+<div class="hobby-desc">Shaping matter with hands and fire</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by working with physical materials. The grain of wood, the properties of metals, the craft of shaping matter with your hands. There's something grounding about making things in the real world—a counterbalance to all the digital stuff. Not everything needs to be virtual.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="physical">
+<span class="hobby-icon">🌳</span>
+<div class="hobby-name">Arboriculture</div>
+<div class="hobby-desc">Tree care, forestry, and living systems</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by trees as living systems. Their biology, how they distribute resources, the structural engineering in their growth, forest ecology. These organisms quietly make our world livable, and they've been solving engineering problems longer than we've existed.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="abstract">
+<span class="hobby-icon">♟️</span>
+<div class="hobby-name">Chess</div>
+<div class="hobby-desc">64 squares, infinite possibilities</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by chess as pure strategy. Pattern recognition, calculation, the psychological dimension. It's a perfect closed system—complete information, no luck, just decisions and consequences. A beautiful game for thinking about how minds work.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card" onclick="openModal(this)" data-tags="meta">
+<span class="hobby-icon">🧠</span>
+<div class="hobby-name">Psychology</div>
+<div class="hobby-desc">How minds organize, predict, and imagine</div>
+<div class="hobby-expanded">
+<p>I'm fascinated by theories that explain how minds actually work. Wheatley's organizational thermodynamics—how groups self-organize and dissipate energy. Friston's free energy principle—the idea that brains are prediction machines minimizing surprise. Jung's archetypes—universal patterns buried deep in the collective unconscious. The mind is the most complex system we know, and these frameworks make it a little less mysterious.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+<div class="hobby-card loki-card" onclick="openModal(this)" data-tags="human">
+<div class="loki-photo">
+<img src="loki.jpeg" alt="Loki">
+</div>
+<div class="hobby-name">Loki</div>
+<div class="hobby-desc">God of chaos, best boy ever</div>
+<div class="hobby-expanded">
+<p>This is Loki. He's named after the god of chaos and he lives up to it every single day. He's chaotic, mischievous, probably plotting something right now—and he's my favorite thing in the world. I love him.</p>
+</div>
+<div class="expand-indicator">↓ Click to expand</div>
+</div>
+
+</div>
+</section>
+
+<!-- Quote -->
+<section class="factory-section">
+<blockquote class="factory-quote">
+"We are the music makers, and we are the dreamers of dreams."
+</blockquote>
+<p class="factory-subtext">— But now, we build the machines that dream with us.</p>
+</section>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+<div class="modal-content">
+<button class="modal-close" onclick="closeModal()">&times;</button>
+<div class="modal-icon" id="modalIcon"></div>
+<div class="modal-title" id="modalTitle"></div>
+<div class="modal-subtitle" id="modalSubtitle"></div>
+<div class="modal-text" id="modalText"></div>
+</div>
+</div>
+
+<audio id="pureImagination" preload="auto" loop>
+  <source src="pure-imagination.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// Modal
+const modal = document.getElementById('modal');
+const modalIcon = document.getElementById('modalIcon');
+const modalTitle = document.getElementById('modalTitle');
+const modalSubtitle = document.getElementById('modalSubtitle');
+const modalText = document.getElementById('modalText');
+
+let scrollY = 0;
+
+function openModal(card) {
+    scrollY = window.scrollY;
+
+    const iconEl = card.querySelector('.hobby-icon');
+    const lokiImg = card.querySelector('.loki-photo img');
+
+    if (lokiImg) {
+        modalIcon.innerHTML =
+          `<img src="loki.jpeg" style="width:80px;height:80px;border-radius:50%">`;
+    } else {
+        modalIcon.textContent = iconEl?.textContent || '';
+    }
+
+    modalTitle.textContent = card.querySelector('.hobby-name').textContent;
+    modalTitle.style.color =
+      getComputedStyle(card).getPropertyValue('--card-color');
+    modalSubtitle.textContent =
+      card.querySelector('.hobby-desc').textContent;
+    modalText.textContent =
+      card.querySelector('.hobby-expanded p').textContent;
+
+    document.body.classList.add('modal-open');
+    document.body.style.top = `-${scrollY}px`;
+
+    modal.classList.add('active');
+}
+
+function closeModal() {
+    modal.classList.remove('active');
+    document.body.classList.remove('modal-open');
+    document.body.style.top = '';
+    window.scrollTo(0, scrollY);
+}
+
+
+modal.addEventListener('click', e => { if (e.target === modal) closeModal() });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal() });
+
+// Card 3D tilt effect
+document.querySelectorAll('.hobby-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const y = e.clientY - r.top;
+        const rx = ((y / r.height) - 0.5) * -15;
+        const ry = ((x / r.width) - 0.5) * 15;
+        card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(20px)`;
+        card.style.setProperty('--mx', `${x / r.width * 100}%`);
+        card.style.setProperty('--my', `${y / r.height * 100}%`);
+    });
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+    });
+});
+
+// Grid parallax
+document.addEventListener('mousemove', e => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 40;
+    const y = (e.clientY / window.innerHeight - 0.5) * 40;
+    document.getElementById('grid').style.transform = `translate(${x}px, ${y}px)`;
+});
+
+// Floating shapes
+const shapesContainer = document.getElementById('floatingShapes');
+const shapes = ['◇', '○', '□', '△', '⬡', '✧', '◎', '⬢', '▽', '☆', '✦', '⬟'];
+const colors = ['#FFB5E8', '#DCD3FF', '#A5D8FF', '#B5FFCE', '#FFF5BA', '#FFCAB0', '#E0BBE4'];
+
+function createShape() {
+    const shape = document.createElement('div');
+    shape.className = 'floating-shape';
+    shape.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+    shape.style.left = Math.random() * 100 + '%';
+    shape.style.color = colors[Math.floor(Math.random() * colors.length)];
+    shape.style.fontSize = (1.5 + Math.random() * 2) + 'rem';
+    shape.style.animationDuration = (20 + Math.random() * 20) + 's';
+    shape.style.animationDelay = (Math.random() * -40) + 's';
+    shapesContainer.appendChild(shape);
+    
+    shape.addEventListener('animationend', () => {
+        shape.remove();
+        createShape();
+    });
+}
+
+for (let i = 0; i < 20; i++) createShape();
+
+// Matrix rain
+const matrixContainer = document.getElementById('matrix');
+const matrixChars = 'アイウエオカキクケコ01∞φπ∆Ω';
+
+function createMatrixColumn() {
+    const col = document.createElement('div');
+    col.className = 'matrix-column';
+    col.style.left = Math.random() * 100 + '%';
+    col.style.color = colors[Math.floor(Math.random() * colors.length)];
+    col.style.animationDuration = (8 + Math.random() * 8) + 's';
+    
+    let text = '';
+    for (let i = 0; i < 15 + Math.random() * 15; i++) {
+        text += matrixChars[Math.floor(Math.random() * matrixChars.length)] + '<br>';
+    }
+    col.innerHTML = text;
+    matrixContainer.appendChild(col);
+    
+    col.addEventListener('animationend', () => {
+        col.remove();
+        createMatrixColumn();
+    });
+}
+
+for (let i = 0; i < 25; i++) {
+    setTimeout(() => createMatrixColumn(), i * 200);
+}
+
+const grid = document.querySelector('.hobbies-grid');
+const cards = Array.from(grid.children);
+
+// Weight maps
+const STRUCTURE_ORDER = [
+  'physical',
+  'craft',
+  'applied',
+  'technical',
+  'theoretical',
+  'abstract',
+  'meta',
+  'human'
+];
+
+const INTUITION_GROUPS = [
+  ['creative'],
+  ['applied','technical'],
+  ['theoretical','abstract'],
+  ['meta','human']
+];
+
+document.querySelectorAll('.fork button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    startMusic();                // 🎵 magic begins
+    applyMode(btn.dataset.mode);
+  });
+});
+
+
+function applyMode(mode) {
+  let reordered = [];
+
+  if (mode === 'structure') {
+    reordered = cards.slice().sort((a,b) =>
+      rank(a,STRUCTURE_ORDER) - rank(b,STRUCTURE_ORDER)
+    );
+    grid.style.transform = '';
+  }
+
+  if (mode === 'intuition') {
+    reordered = [];
+    INTUITION_GROUPS.forEach(group => {
+      reordered.push(
+        ...cards.filter(c => group.some(t => hasTag(c,t)))
+      );
+    });
+    grid.style.transform = '';
+  }
+
+  if (mode === 'chaos') {
+    reordered = cards.slice()
+      .sort(() => Math.random() - 0.5);
+    grid.style.transform = 'rotate(-1deg)';
+  }
+
+  reordered.forEach(card => grid.appendChild(card));
+}
+
+/* helpers */
+function hasTag(card, tag) {
+  return card.dataset.tags?.includes(tag);
+}
+
+function rank(card, order) {
+  const tags = card.dataset.tags?.split(',') || [];
+  for (let i = 0; i < order.length; i++) {
+    if (tags.includes(order[i])) return i;
+  }
+  return order.length;
+}
+
+const music = document.getElementById('pureImagination');
+let musicStarted = false;
+
+function startMusic() {
+  if (musicStarted) return;
+  music.volume = 0.25;   // subtle
+  music.play().catch(()=>{});
+  musicStarted = true;
+}
+
+
+</script>
+
+
+
+</body>
+</html>
