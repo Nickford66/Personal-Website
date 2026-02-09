@@ -222,11 +222,35 @@ z-index:5;
 font-family:'Syne',sans-serif;
 font-size:3rem;
 text-align:center;
-margin-bottom:4rem;
+margin-bottom:1rem;
 background:linear-gradient(90deg,var(--lav),var(--pink));
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 background-clip:text;
+}
+
+.section-subtitle{
+text-align:center;
+color:rgba(255,255,255,.5);
+font-size:.85rem;
+margin-bottom:4rem;
+letter-spacing:2px;
+}
+
+/* Category headers */
+.category-header{
+font-family:'Syne',sans-serif;
+font-size:1.4rem;
+font-weight:700;
+margin:3rem 0 1.5rem;
+padding-left:.5rem;
+max-width:1400px;
+margin-left:auto;
+margin-right:auto;
+}
+
+.category-header:first-of-type{
+margin-top:0;
 }
 
 .hobbies-grid{
@@ -234,7 +258,7 @@ display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:2rem;
 max-width:1400px;
-margin:auto;
+margin:0 auto 2rem;
 }
 
 /* Card base */
@@ -250,6 +274,8 @@ cursor:pointer;
 transform-style:preserve-3d;
 transition:transform .2s ease,box-shadow .2s ease;
 position:relative;
+text-decoration:none;
+display:block;
 }
 
 .hobby-card::after{
@@ -291,40 +317,34 @@ line-height:1.5;
 font-size:.75rem;
 color:rgba(255,255,255,.4);
 margin-top:1rem;
-transform:rotate(180deg);
 display:inline-block;
 }
 
 .hobby-card:hover .expand-indicator{
 color:var(--card-color,var(--pink));
-animation:wiggle .5s ease-in-out infinite;
 }
 
-@keyframes wiggle{
-0%,100%{transform:rotate(180deg) translateX(0)}
-25%{transform:rotate(180deg) translateX(-3px)}
-75%{transform:rotate(180deg) translateX(3px)}
+/* Link indicator for external cards */
+.link-indicator{
+font-size:.75rem;
+color:rgba(255,255,255,.3);
+margin-top:1rem;
+display:inline-block;
+transition:color .2s;
 }
 
-/* Card colors */
-.hobby-card:nth-child(1){--card-color:var(--mint);--glow:rgba(181,255,206,.4)}
-.hobby-card:nth-child(2){--card-color:var(--pink);--glow:rgba(255,181,232,.3)}
-.hobby-card:nth-child(3){--card-color:var(--lav);--glow:rgba(224,187,228,.3)}
-.hobby-card:nth-child(4){--card-color:var(--purple);--glow:rgba(220,211,255,.3)}
-.hobby-card:nth-child(5){--card-color:var(--blue);--glow:rgba(165,216,255,.3)}
-.hobby-card:nth-child(6){--card-color:var(--yellow);--glow:rgba(255,245,186,.3)}
-.hobby-card:nth-child(7){--card-color:var(--peach);--glow:rgba(255,202,176,.3)}
-.hobby-card:nth-child(8){--card-color:var(--lav);--glow:rgba(224,187,228,.3)}
-.hobby-card:nth-child(9){--card-color:var(--pink);--glow:rgba(255,181,232,.3)}
-.hobby-card:nth-child(10){--card-color:var(--purple);--glow:rgba(220,211,255,.3)}
-.hobby-card:nth-child(11){--card-color:var(--blue);--glow:rgba(165,216,255,.3)}
-.hobby-card:nth-child(12){--card-color:var(--mint);--glow:rgba(181,255,206,.3)}
-.hobby-card:nth-child(13){--card-color:var(--yellow);--glow:rgba(255,245,186,.3)}
-.hobby-card:nth-child(14){--card-color:var(--peach);--glow:rgba(255,202,176,.3)}
-.hobby-card:nth-child(15){--card-color:var(--lav);--glow:rgba(224,187,228,.3)}
-.hobby-card:nth-child(16){--card-color:var(--pink);--glow:rgba(255,181,232,.3)}
-.hobby-card:nth-child(17){--card-color:var(--purple);--glow:rgba(220,211,255,.3)}
-.hobby-card:nth-child(18){--card-color:var(--peach);--glow:rgba(255,202,176,.4)}
+.hobby-card:hover .link-indicator{
+color:var(--card-color,var(--pink));
+}
+
+/* Card colors by nth-child won't work well with categories, so we use data-color */
+.hobby-card[data-color="mint"]{--card-color:var(--mint);--glow:rgba(181,255,206,.4)}
+.hobby-card[data-color="pink"]{--card-color:var(--pink);--glow:rgba(255,181,232,.3)}
+.hobby-card[data-color="lav"]{--card-color:var(--lav);--glow:rgba(224,187,228,.3)}
+.hobby-card[data-color="purple"]{--card-color:var(--purple);--glow:rgba(220,211,255,.3)}
+.hobby-card[data-color="blue"]{--card-color:var(--blue);--glow:rgba(165,216,255,.3)}
+.hobby-card[data-color="yellow"]{--card-color:var(--yellow);--glow:rgba(255,245,186,.3)}
+.hobby-card[data-color="peach"]{--card-color:var(--peach);--glow:rgba(255,202,176,.3)}
 
 /* Loki card */
 .loki-photo{
@@ -370,9 +390,7 @@ font-size:1.2rem;
 color:var(--lav);
 }
 
-/* Modal - fixed properly */
-/* ========== MODAL (BULLETPROOF) ========== */
-
+/* Modal */
 body.modal-open {
   overflow: hidden;
   position: fixed;
@@ -384,7 +402,6 @@ body.modal-open {
   inset: 0;
   background: rgba(0,0,0,0.9);
   z-index: 100000;
-
   opacity: 0;
   pointer-events: none;
   transition: opacity .25s ease;
@@ -400,21 +417,17 @@ body.modal-open {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(.95);
-  
   background: rgba(20,20,35,.98);
   backdrop-filter: blur(20px);
   border-radius: 24px;
   padding: 3rem;
-
   width: min(600px, 90vw);
   max-height: 80vh;
   overflow-y: auto;
-
   opacity: 0;
   transition:
     transform .3s cubic-bezier(.2,.8,.2,1),
     opacity .3s ease;
-
   box-shadow: 0 0 60px rgba(255,181,232,.25);
 }
 
@@ -422,22 +435,19 @@ body.modal-open {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
 }
+
 .modal-close {
   position: absolute;
   top: 1.2rem;
   right: 1.2rem;
-
   width: 42px;
   height: 42px;
   border-radius: 50%;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.25);
-
   cursor: pointer;
   transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 }
@@ -452,21 +462,14 @@ body.modal-open {
   border-radius: 2px;
 }
 
-.modal-close::before {
-  transform: rotate(45deg);
-}
-
-.modal-close::after {
-  transform: rotate(-45deg);
-}
+.modal-close::before { transform: rotate(45deg); }
+.modal-close::after { transform: rotate(-45deg); }
 
 .modal-close:hover {
   background: rgba(255,181,232,0.15);
   box-shadow: 0 0 20px rgba(255,181,232,0.35);
   transform: rotate(90deg) scale(1.05);
 }
-
-
 
 .modal-icon{font-size:4rem;margin-bottom:1rem}
 .modal-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;margin-bottom:.5rem}
@@ -538,20 +541,16 @@ body.modal-open {
   max-width: 900px;
   margin: 2rem auto 5rem;
   padding: 2rem 2.5rem;
-
   background: rgba(255,255,255,0.04);
   border-left: 4px solid var(--lav);
   border-radius: 12px;
-
   font-family: 'Syne', sans-serif;
   font-size: 1.25rem;
   line-height: 1.6;
   color: rgba(255,255,255,0.9);
-
   opacity: 0;
   transform: translateY(10px);
   transition: opacity .5s ease, transform .5s ease;
-
   display: none;
 }
 
@@ -561,9 +560,7 @@ body.modal-open {
   transform: translateY(0);
 }
 
-.mode-quote blockquote {
-  margin-bottom: 1rem;
-}
+.mode-quote blockquote { margin-bottom: 1rem; }
 
 .mode-quote span {
   font-family: 'Space Mono', monospace;
@@ -610,6 +607,7 @@ Welcome to <span class="highlight">Wonka's Factory, realized</span>—AI is the 
 </div>
 </div>
 </section>
+
 <section class="fork">
   <h2>How do you want to explore this mind?</h2>
   <div class="fork-buttons">
@@ -624,13 +622,17 @@ Welcome to <span class="highlight">Wonka's Factory, realized</span>—AI is the 
   <span id="modeQuoteAuthor"></span>
 </section>
 
-
 <!-- Workshop -->
 <section class="hobbies-section">
 <h2 class="section-title">The Workshop</h2>
-<div class="hobbies-grid">
+<p class="section-subtitle">Things I think about &middot; Things I read &middot; Rabbit holes worth following</p>
 
-<div class="hobby-card" onclick="openModal(this)" data-tags="theoretical,meta">
+<!-- ══════ KEPT CARDS (expandable) ══════ -->
+
+<div class="category-header" style="color:var(--lav)">✦ Core Ideas</div>
+<div class="hobbies-grid" id="coreGrid">
+
+<div class="hobby-card" data-color="mint" onclick="openModal(this)">
   <span class="hobby-icon">∞</span>
   <div class="hobby-name">Infinity</div>
   <div class="hobby-desc">Why beginnings and endings are human inventions</div>
@@ -638,188 +640,37 @@ Welcome to <span class="highlight">Wonka's Factory, realized</span>—AI is the 
     <p>
       Humans are deeply conditioned to think in terms of starts and stops—birth and death, zero and one, on and off. Even our mathematics prefers clean boundaries and discrete states. But the universe itself shows no such preference.
       <br><br>
-      There is no requirement for reality to have a beginning, an end, or even a fundamental unit. Continuity, recursion, and self-consistency work just as well—often better. Infinity isn’t a paradox of nature; it’s a discomfort of the human mind.
+      There is no requirement for reality to have a beginning, an end, or even a fundamental unit. Continuity, recursion, and self-consistency work just as well—often better. Infinity isn't a paradox of nature; it's a discomfort of the human mind.
       <br><br>
-      What we call a “three-dimensional object” moving through time is, from a higher-dimensional perspective, a single crystalline structure—a worldline or world-volume that already exists as a whole. Motion is simply how a lower-dimensional observer experiences traversal through that structure.
+      What we call a "three-dimensional object" moving through time is, from a higher-dimensional perspective, a single crystalline structure—a worldline or world-volume that already exists as a whole. Motion is simply how a lower-dimensional observer experiences traversal through that structure.
       <br><br>
       Time does not flow. We do.
     </p>
   </div>
-  <div class="expand-indicator">↓ Click to expand</div>
+  <div class="expand-indicator">↓ click to expand</div>
 </div>
 
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="abstract,meta">
-<span class="hobby-icon">🤖</span>
-<div class="hobby-name">Artificial Intelligence</div>
-<div class="hobby-desc">The greatest tool humanity has ever created</div>
-<div class="hobby-expanded">
-<p>I'm interested in everything and an expert at nothing—and AI is what makes that possible. It's the great equalizer, letting a curious mind explore any field, build any model, test any theory. Is it right 100% of the time? No. But what matters more, having fun and exploring ideas rapidly, or being right all the time? I've bought more books since using AI than I ever have before—from Paul Dirac to Navier-Stokes analysis. AI doesn't replace expertise—it ignites curiosity.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="abstract,meta">
-<span class="hobby-icon">🧬</span>
-<div class="hobby-name">Biohacking</div>
-<div class="hobby-desc">Optimizing the biological machine</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by the chemistry of focus and energy. Tyrosine for dopamine precursor loading, matcha for smooth L-theanine balanced caffeine, coffee for raw stimulation. And yes—Diet Coke and Zyn work remarkably well together. The aspartame-caffeine combo hits different, and nicotine is genuinely one of the most effective cognitive enhancers we know of. It's not about being healthy, it's about being optimized.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="meta">
+<div class="hobby-card" data-color="yellow" onclick="openModal(this)">
 <span class="hobby-icon">🧘</span>
 <div class="hobby-name">Zen Philosophy</div>
 <div class="hobby-desc">The art of no-mind</div>
 <div class="hobby-expanded">
 <p>I'm fascinated by Zen as a counterweight to all the noise. The concept of mushin—no-mind—where thought dissolves into pure action. The koans that break logical thinking. The paradox of trying not to try. In a world of constant optimization and information overload, Zen reminds you that sometimes the answer is to stop asking the question.</p>
 </div>
-<div class="expand-indicator">↓ Click to expand</div>
+<div class="expand-indicator">↓ click to expand</div>
 </div>
 
-<div class="hobby-card" onclick="openModal(this)" data-tags="meta">
+<div class="hobby-card" data-color="peach" onclick="openModal(this)">
 <span class="hobby-icon">✝️</span>
 <div class="hobby-name">Christianity</div>
 <div class="hobby-desc">Grace, redemption, and the ultimate rebel</div>
 <div class="hobby-expanded">
 <p>I'm fascinated by Christianity and why it's endured for two thousand years. The radical idea that you're loved not because of what you do, but despite what you've done. And Jesus? Absolute baller. Flipped tables in temples, hung out with outcasts and sinners, spoke truth to power, and literally conquered death. He told the religious elite they were wrong, touched the untouchables, and said the last shall be first. That's not gentle meekness—that's revolutionary courage wrapped in perfect love.</p>
 </div>
-<div class="expand-indicator">↓ Click to expand</div>
+<div class="expand-indicator">↓ click to expand</div>
 </div>
 
-<div class="hobby-card" onclick="openModal(this)" data-tags="applied,physical">
-<span class="hobby-icon">✈️</span>
-<div class="hobby-name">Aviation</div>
-<div class="hobby-desc">Thrust vectoring, morphing wings, and the poetry of flight</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by everything that flies. The physics of lift, how thrust vectoring changes maneuverability, morphing wing concepts, the way birds do things that seem aerodynamically impossible. There's something poetic about defying gravity—the engineering, the physics, the sheer audacity of flight. The sky isn't a limit, it's an invitation.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="applied,technical">
-<span class="hobby-icon">🔐</span>
-<div class="hobby-name">Cybersecurity</div>
-<div class="hobby-desc">Human factors, social engineering, and digital fortresses</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by the human side of security. Social engineering, the psychology of trust, how people become the weakest link in any system. The most sophisticated firewall means nothing if someone can talk their way past it. Security is ultimately about understanding people—how they think, how they're deceived, and how they can be protected from themselves.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="applied,technical">
-<span class="hobby-icon">🔧</span>
-<div class="hobby-name">Computer Architecture</div>
-<div class="hobby-desc">FPGAs, silicon dreams, and logic gates</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by how computers actually work at the lowest level. FPGAs, logic gates, cache hierarchies, instruction pipelines—how transistors become thought. There's something magical about the idea of programming hardware itself, of designing the very substrate that makes computation possible.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="theoretical">
-<span class="hobby-icon">⚛️</span>
-<div class="hobby-name">Physics</div>
-<div class="hobby-desc">Quantum mechanics & general relativity</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by the fundamental nature of reality. Quantum mechanics and its strange superpositions, general relativity bending spacetime, and the deep mystery of how these two pillars might someday unify. The universe is stranger than we can imagine, and thinking about it never gets old.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="applied,technical">
-<span class="hobby-icon">🌊</span>
-<div class="hobby-name">Fluid Dynamics</div>
-<div class="hobby-desc">Turbulence, vortices, and flows</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by how fluids move. Turbulence, laminar flow, vortex formation, the elegance and chaos of the Navier-Stokes equations. There's a reason it's one of the great unsolved problems in physics. Watch smoke curl or water swirl—there's hidden mathematics everywhere, beautiful and untamed.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="applied,technical">
-<span class="hobby-icon">💾</span>
-<div class="hobby-name">Microchips</div>
-<div class="hobby-desc">Embedded systems and nanoscale engineering</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by embedded systems and the nanoscale world of silicon. How we build trust into tiny chips, how cryptography gets implemented in hardware, how quantum effects start mattering at these scales. Microchips are the atoms of the digital world—everything else is built on top.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="creative">
-<span class="hobby-icon">🎨</span>
-<div class="hobby-name">Art</div>
-<div class="hobby-desc">Geometric abstraction, golden ratios, and watercolor</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by the intersection of mathematics and visual beauty. Geometric abstraction, golden ratio compositions, the precision of mathematical structures rendered in watercolor. There's something satisfying about art that follows rules—where every shape and proportion has a reason.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="creative">
-<span class="hobby-icon">🎵</span>
-<div class="hobby-name">Music</div>
-<div class="hobby-desc">From progressive metal to jazz to country</div>
-<div class="hobby-expanded">
-<p>I love everything. Progressive metal, jazz standards, Paganini's 24 Caprices, country, classical—if it's got soul, I'm in. Rhapsody in Blue and Take Five are probably my favorite pieces. There's something about music that crosses every boundary, where math becomes emotion and vibration becomes meaning. Genre loyalty is overrated.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="meta">
-<span class="hobby-icon">📚</span>
-<div class="hobby-name">Philosophy</div>
-<div class="hobby-desc">Transhumanism and the future of consciousness</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by the big questions. What is consciousness? What does it mean to be human when we can augment ourselves? What are the ethics of a post-human future? We're living through the most philosophically interesting time in history, and I can't stop thinking about where it's all heading.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="meta">
-<span class="hobby-icon">🔨</span>
-<div class="hobby-name">Woodworking & Metalworking</div>
-<div class="hobby-desc">Shaping matter with hands and fire</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by working with physical materials. The grain of wood, the properties of metals, the craft of shaping matter with your hands. There's something grounding about making things in the real world—a counterbalance to all the digital stuff. Not everything needs to be virtual.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="physical">
-<span class="hobby-icon">🌳</span>
-<div class="hobby-name">Arboriculture</div>
-<div class="hobby-desc">Tree care, forestry, and living systems</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by trees as living systems. Their biology, how they distribute resources, the structural engineering in their growth, forest ecology. These organisms quietly make our world livable, and they've been solving engineering problems longer than we've existed.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="abstract">
-<span class="hobby-icon">♟️</span>
-<div class="hobby-name">Chess</div>
-<div class="hobby-desc">64 squares, infinite possibilities</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by chess as pure strategy. Pattern recognition, calculation, the psychological dimension. It's a perfect closed system—complete information, no luck, just decisions and consequences. A beautiful game for thinking about how minds work.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card" onclick="openModal(this)" data-tags="meta">
-<span class="hobby-icon">🧠</span>
-<div class="hobby-name">Psychology</div>
-<div class="hobby-desc">How minds organize, predict, and imagine</div>
-<div class="hobby-expanded">
-<p>I'm fascinated by theories that explain how minds actually work. Wheatley's organizational thermodynamics—how groups self-organize and dissipate energy. Friston's free energy principle—the idea that brains are prediction machines minimizing surprise. Jung's archetypes—universal patterns buried deep in the collective unconscious. The mind is the most complex system we know, and these frameworks make it a little less mysterious.</p>
-</div>
-<div class="expand-indicator">↓ Click to expand</div>
-</div>
-
-<div class="hobby-card loki-card" onclick="openModal(this)" data-tags="human">
+<div class="hobby-card loki-card" data-color="pink" onclick="openModal(this)">
 <div class="loki-photo">
 <img src="loki.jpeg" alt="Loki">
 </div>
@@ -828,10 +679,214 @@ Welcome to <span class="highlight">Wonka's Factory, realized</span>—AI is the 
 <div class="hobby-expanded">
 <p>This is Loki. He's named after the god of chaos and he lives up to it every single day. He's chaotic, mischievous, probably plotting something right now—and he's my favorite thing in the world. I love him.</p>
 </div>
-<div class="expand-indicator">↓ Click to expand</div>
+<div class="expand-indicator">↓ click to expand</div>
 </div>
 
 </div>
+
+<!-- ══════ MATH & PHYSICS ══════ -->
+
+<div class="category-header" style="color:var(--blue)">⚛ Math & Physics</div>
+<div class="hobbies-grid">
+
+<a class="hobby-card" data-color="blue" href="https://teaching.csse.uwa.edu.au/units/CITS1001/extension/ancient-babylonian-algorithms.pdf" target="_blank" rel="noopener">
+  <span class="hobby-icon">𒀭</span>
+  <div class="hobby-name">Babylonian Algorithms</div>
+  <div class="hobby-desc">Ancient computation methods — the OG algorithms</div>
+  <div class="link-indicator">↗ PDF</div>
+</a>
+
+<a class="hobby-card" data-color="purple" href="https://personal.math.ubc.ca/~cass/courses/m446-03/pl322/pl322.html" target="_blank" rel="noopener">
+  <span class="hobby-icon">📜</span>
+  <div class="hobby-name">Plimpton 322</div>
+  <div class="hobby-desc">The Babylonian tablet that rewrites math history</div>
+  <div class="link-indicator">↗ UBC</div>
+</a>
+
+<a class="hobby-card" data-color="mint" href="https://courses.seas.harvard.edu/climate/eli/Courses/APM203/2003fall/Poschel_ClassicalKAM.pdf" target="_blank" rel="noopener">
+  <span class="hobby-icon">🌀</span>
+  <div class="hobby-name">Classical KAM Theory</div>
+  <div class="hobby-desc">Pöschel's lecture on quasiperiodic stability</div>
+  <div class="link-indicator">↗ Harvard PDF</div>
+</a>
+
+<a class="hobby-card" data-color="lav" href="https://mathshistory.st-andrews.ac.uk/Extras/Einstein_ether/" target="_blank" rel="noopener">
+  <span class="hobby-icon">🕳️</span>
+  <div class="hobby-name">Einstein on the Ether</div>
+  <div class="hobby-desc">Einstein's own words on relativity and the ether concept</div>
+  <div class="link-indicator">↗ St Andrews</div>
+</a>
+
+<a class="hobby-card" data-color="yellow" href="https://www.damtp.cam.ac.uk/user/tong/qhe/five.pdf" target="_blank" rel="noopener">
+  <span class="hobby-icon">⟨ψ|</span>
+  <div class="hobby-name">Quantum Hall Effect</div>
+  <div class="hobby-desc">David Tong's notes — topology meets condensed matter</div>
+  <div class="link-indicator">↗ Cambridge PDF</div>
+</a>
+
+<a class="hobby-card" data-color="peach" href="https://arxiv.org/pdf/2405.05710" target="_blank" rel="noopener">
+  <span class="hobby-icon">📐</span>
+  <div class="hobby-name">arXiv 2405.05710</div>
+  <div class="hobby-desc">Recent research — geometry, physics, and structure</div>
+  <div class="link-indicator">↗ arXiv PDF</div>
+</a>
+
+<a class="hobby-card" data-color="blue" href="https://arxiv.org/pdf/2601.03292" target="_blank" rel="noopener">
+  <span class="hobby-icon">🔬</span>
+  <div class="hobby-name">arXiv 2601.03292</div>
+  <div class="hobby-desc">Cutting-edge theoretical physics preprint</div>
+  <div class="link-indicator">↗ arXiv PDF</div>
+</a>
+
+<a class="hobby-card" data-color="purple" href="https://arxiv.org/pdf/2502.04524" target="_blank" rel="noopener">
+  <span class="hobby-icon">∇</span>
+  <div class="hobby-name">arXiv 2502.04524</div>
+  <div class="hobby-desc">Fresh from the arxiv — mathematical physics</div>
+  <div class="link-indicator">↗ arXiv PDF</div>
+</a>
+
+<a class="hobby-card" data-color="peach" href="https://web.maths.unsw.edu.au/~norman/Rational1.htm" target="_blank" rel="noopener">
+  <span class="hobby-icon">△</span>
+  <div class="hobby-name">Rational Trigonometry</div>
+  <div class="hobby-desc">Wildberger's algebraic approach — no sines, no cosines</div>
+  <div class="link-indicator">↗ UNSW</div>
+</a>
+
+</div>
+
+<!-- ══════ ART & HISTORY ══════ -->
+
+<div class="category-header" style="color:var(--pink)">🎨 Art, History & Philosophy</div>
+<div class="hobbies-grid">
+
+<a class="hobby-card" data-color="pink" href="https://codex-atlanticus.ambrosiana.it/#/Overview" target="_blank" rel="noopener">
+  <span class="hobby-icon">📖</span>
+  <div class="hobby-name">Codex Atlanticus</div>
+  <div class="hobby-desc">Da Vinci's largest collection of drawings and writings — digitized</div>
+  <div class="link-indicator">↗ Ambrosiana</div>
+</a>
+
+<a class="hobby-card" data-color="lav" href="https://scgp.stonybrook.edu/wp-content/uploads/2018/11/Iconic_Wall_catalogue.pdf" target="_blank" rel="noopener">
+  <span class="hobby-icon">🖼️</span>
+  <div class="hobby-name">Iconic Wall Catalogue</div>
+  <div class="hobby-desc">Where math meets visual art — Stony Brook collection</div>
+  <div class="link-indicator">↗ SCGP PDF</div>
+</a>
+
+<a class="hobby-card" data-color="yellow" href="https://www.research-collection.ethz.ch/entities/publication/4c709f6f-298b-45a3-8004-6eaa073d3486" target="_blank" rel="noopener">
+  <span class="hobby-icon">🏛️</span>
+  <div class="hobby-name">ETH Zürich Archive</div>
+  <div class="hobby-desc">Historical scientific publication from ETH's research collection</div>
+  <div class="link-indicator">↗ ETH Zürich</div>
+</a>
+
+<a class="hobby-card" data-color="peach" href="https://geoffneilsen.wordpress.com/2014/02/07/philosophy/" target="_blank" rel="noopener">
+  <span class="hobby-icon">🤔</span>
+  <div class="hobby-name">On Philosophy</div>
+  <div class="hobby-desc">Geoff Neilsen's reflections on thinking about thinking</div>
+  <div class="link-indicator">↗ Blog</div>
+</a>
+
+<a class="hobby-card" data-color="mint" href="https://www.mit.edu/~xela/tao.html" target="_blank" rel="noopener">
+  <span class="hobby-icon">☯</span>
+  <div class="hobby-name">Tao Te Ching</div>
+  <div class="hobby-desc">The classic text — hosted at MIT</div>
+  <div class="link-indicator">↗ MIT</div>
+</a>
+
+<a class="hobby-card" data-color="blue" href="https://scott.london/interviews/wheatley.html" target="_blank" rel="noopener">
+  <span class="hobby-icon">🔄</span>
+  <div class="hobby-name">Margaret Wheatley</div>
+  <div class="hobby-desc">Interview on organizational chaos and living systems</div>
+  <div class="link-indicator">↗ Scott London</div>
+</a>
+
+</div>
+
+<!-- ══════ ENGINEERING & CODE ══════ -->
+
+<div class="category-header" style="color:var(--mint)">🔧 Engineering & Code</div>
+<div class="hobbies-grid">
+
+<a class="hobby-card" data-color="mint" href="https://beej.us/guide/bgc/html/split/index.html" target="_blank" rel="noopener">
+  <span class="hobby-icon">💻</span>
+  <div class="hobby-name">Beej's Guide to C</div>
+  <div class="hobby-desc">The classic intro to C — still unmatched</div>
+  <div class="link-indicator">↗ Beej</div>
+</a>
+
+<a class="hobby-card" data-color="purple" href="https://bcantrill.dtrace.org/2018/09/18/falling-in-love-with-rust/" target="_blank" rel="noopener">
+  <span class="hobby-icon">🦀</span>
+  <div class="hobby-name">Falling in Love with Rust</div>
+  <div class="hobby-desc">Bryan Cantrill on why Rust changes everything</div>
+  <div class="link-indicator">↗ dtrace.org</div>
+</a>
+
+<a class="hobby-card" data-color="blue" href="https://www.electropages.com/blog/2021/04/computer-architecture-must-change-every-5-years" target="_blank" rel="noopener">
+  <span class="hobby-icon">🔧</span>
+  <div class="hobby-name">Architecture Must Change</div>
+  <div class="hobby-desc">Why computer architecture reinvents itself every 5 years</div>
+  <div class="link-indicator">↗ Electropages</div>
+</a>
+
+<a class="hobby-card" data-color="yellow" href="https://www.electronics-tutorials.ws/diode/diode_3.html" target="_blank" rel="noopener">
+  <span class="hobby-icon">⚡</span>
+  <div class="hobby-name">Diode Tutorials</div>
+  <div class="hobby-desc">Back to basics — understanding semiconductor junctions</div>
+  <div class="link-indicator">↗ Electronics Tutorials</div>
+</a>
+
+</div>
+
+<!-- ══════ CYBERSECURITY ══════ -->
+
+<div class="category-header" style="color:var(--peach)">🔐 Cybersecurity</div>
+<div class="hobbies-grid">
+
+<a class="hobby-card" data-color="peach" href="https://book.hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-methodology.html" target="_blank" rel="noopener">
+  <span class="hobby-icon">🔓</span>
+  <div class="hobby-name">HackTricks</div>
+  <div class="hobby-desc">Pentesting methodology — the hacker's handbook</div>
+  <div class="link-indicator">↗ HackTricks</div>
+</a>
+
+<a class="hobby-card" data-color="lav" href="https://guide.offsecnewbie.com" target="_blank" rel="noopener">
+  <span class="hobby-icon">🛡️</span>
+  <div class="hobby-name">OffSec Newbie Guide</div>
+  <div class="hobby-desc">From zero to offensive security — community guide</div>
+  <div class="link-indicator">↗ OffSecNewbie</div>
+</a>
+
+</div>
+
+<!-- ══════ AI & ML ══════ -->
+
+<div class="category-header" style="color:var(--yellow)">🤖 AI & Machine Learning</div>
+<div class="hobbies-grid">
+
+<a class="hobby-card" data-color="yellow" href="https://www.deeplearning.ai" target="_blank" rel="noopener">
+  <span class="hobby-icon">🧠</span>
+  <div class="hobby-name">DeepLearning.AI</div>
+  <div class="hobby-desc">Andrew Ng's courses — the gold standard for ML education</div>
+  <div class="link-indicator">↗ deeplearning.ai</div>
+</a>
+
+<a class="hobby-card" data-color="pink" href="https://www.fast.ai/" target="_blank" rel="noopener">
+  <span class="hobby-icon">⚡</span>
+  <div class="hobby-name">fast.ai</div>
+  <div class="hobby-desc">Practical deep learning for coders — top-down approach</div>
+  <div class="link-indicator">↗ fast.ai</div>
+</a>
+
+<a class="hobby-card" data-color="mint" href="https://www.spsanderson.com/steveondata/posts/2025-03-05/" target="_blank" rel="noopener">
+  <span class="hobby-icon">📊</span>
+  <div class="hobby-name">Steve on Data</div>
+  <div class="hobby-desc">Data science insights and practical walkthroughs</div>
+  <div class="link-indicator">↗ Blog</div>
+</a>
+
+</div>
+
 </section>
 
 <!-- Quote -->
@@ -868,6 +923,9 @@ const modalText = document.getElementById('modalText');
 let scrollY = 0;
 
 function openModal(card) {
+    // Only open modal for cards with expanded content (not link cards)
+    if (!card.querySelector('.hobby-expanded')) return;
+
     scrollY = window.scrollY;
 
     const iconEl = card.querySelector('.hobby-icon');
@@ -900,7 +958,6 @@ function closeModal() {
     document.body.style.top = '';
     window.scrollTo(0, scrollY);
 }
-
 
 modal.addEventListener('click', e => { if (e.target === modal) closeModal() });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal() });
@@ -944,7 +1001,6 @@ function createShape() {
     shape.style.animationDuration = (20 + Math.random() * 20) + 's';
     shape.style.animationDelay = (Math.random() * -40) + 's';
     shapesContainer.appendChild(shape);
-    
     shape.addEventListener('animationend', () => {
         shape.remove();
         createShape();
@@ -963,14 +1019,12 @@ function createMatrixColumn() {
     col.style.left = Math.random() * 100 + '%';
     col.style.color = colors[Math.floor(Math.random() * colors.length)];
     col.style.animationDuration = (8 + Math.random() * 8) + 's';
-    
     let text = '';
     for (let i = 0; i < 15 + Math.random() * 15; i++) {
         text += matrixChars[Math.floor(Math.random() * matrixChars.length)] + '<br>';
     }
     col.innerHTML = text;
     matrixContainer.appendChild(col);
-    
     col.addEventListener('animationend', () => {
         col.remove();
         createMatrixColumn();
@@ -981,46 +1035,14 @@ for (let i = 0; i < 25; i++) {
     setTimeout(() => createMatrixColumn(), i * 200);
 }
 
-const grid = document.querySelector('.hobbies-grid');
-const cards = Array.from(grid.children);
-
-// Weight maps
-const STRUCTURE_ORDER = [
-  'physical',
-  'craft',
-  'applied',
-  'technical',
-  'theoretical',
-  'abstract',
-  'meta',
-  'human'
-];
-
-const INTUITION_GROUPS = [
-  ['creative'],
-  ['applied','technical'],
-  ['theoretical','abstract'],
-  ['meta','human']
-];
-
-document.querySelectorAll('.fork button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    startMusic();                     // already there
-    showQuote(btn.dataset.mode);      // 👈 new
-    applyMode(btn.dataset.mode);
-  });
-});
-
-
+// Fork mode logic
 const QUOTES = {
   structure: {
-    text: `“You can know the name of a bird in all the languages of the world,
-but when you're finished, you'll know absolutely nothing whatever about the bird.
-So let’s look at the bird and see what it’s doing — that’s what counts.”`,
+    text: `"You can know the name of a bird in all the languages of the world, but when you're finished, you'll know absolutely nothing whatever about the bird. So let's look at the bird and see what it's doing — that's what counts."`,
     author: "— Richard Feynman"
   },
   intuition: {
-    text: `“I have little patience with scientists who take a board of wood, look for its thinnest part, and drill a great number of holes where drilling is easy.”`,
+    text: `"I have little patience with scientists who take a board of wood, look for its thinnest part, and drill a great number of holes where drilling is easy."`,
     author: "— Albert Einstein"
   },
   chaos: {
@@ -1036,98 +1058,30 @@ const quoteAuthor = document.getElementById('modeQuoteAuthor');
 function showQuote(mode) {
   const q = QUOTES[mode];
   if (!q) return;
-
   quoteText.textContent = q.text;
   quoteAuthor.textContent = q.author;
-
   quoteBox.classList.remove('active');
-  void quoteBox.offsetWidth; // reset animation
+  void quoteBox.offsetWidth;
   quoteBox.classList.add('active');
 }
 
-const MODE_LEADS = {
-  structure: 'Fluid Dynamics',
-  intuition: 'Infinity',
-  chaos: 'Loki'
-};
-
-function cardTitle(card) {
-  return card.querySelector('.hobby-name')?.textContent || '';
-}
-
-
-function applyMode(mode) {
-  let reordered = [];
-  const leadTitle = MODE_LEADS[mode];
-
-  // pull out the lead card first (if defined)
-  let leadCard = null;
-  if (leadTitle) {
-    leadCard = cards.find(c => cardTitle(c) === leadTitle);
-  }
-
-  if (mode === 'structure') {
-    reordered = cards
-      .filter(c => c !== leadCard)
-      .sort((a, b) =>
-        rank(a, STRUCTURE_ORDER) - rank(b, STRUCTURE_ORDER)
-      );
-    grid.style.transform = '';
-  }
-
-  if (mode === 'intuition') {
-    reordered = [];
-    INTUITION_GROUPS.forEach(group => {
-      reordered.push(
-        ...cards.filter(
-          c => c !== leadCard && group.some(t => hasTag(c, t))
-        )
-      );
-    });
-    grid.style.transform = '';
-  }
-
-  if (mode === 'chaos') {
-    reordered = cards
-      .filter(c => c !== leadCard)
-      .sort(() => Math.random() - 0.5);
-    grid.style.transform = 'rotate(-1deg)';
-  }
-
-  // prepend the lead card if it exists
-  if (leadCard) reordered.unshift(leadCard);
-
-  reordered.forEach(card => grid.appendChild(card));
-}
-
-
-/* helpers */
-function hasTag(card, tag) {
-  return card.dataset.tags?.includes(tag);
-}
-
-function rank(card, order) {
-  const tags = card.dataset.tags?.split(',') || [];
-  for (let i = 0; i < order.length; i++) {
-    if (tags.includes(order[i])) return i;
-  }
-  return order.length;
-}
+document.querySelectorAll('.fork button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    startMusic();
+    showQuote(btn.dataset.mode);
+  });
+});
 
 const music = document.getElementById('pureImagination');
 let musicStarted = false;
 
 function startMusic() {
   if (musicStarted) return;
-  music.volume = 0.25;   // subtle
+  music.volume = 0.25;
   music.play().catch(()=>{});
   musicStarted = true;
 }
-
-
 </script>
-
-
 
 </body>
 </html>
